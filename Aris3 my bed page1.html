@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Room Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #eeeeee;
+      color: #212121;
+      display: flex;
+      justify-content: center;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 420px;
+      min-height: 100vh;
+      background: #f5f5f5;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      background: #039be5;
+      color: #ffffff;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .app-header-left,
+    .app-header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-header-left {
+      flex: 1;
+    }
+
+    .app-header-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    .app-header-title {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .app-header-right {
+      justify-content: flex-end;
+      gap: 16px;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 18px;
+    }
+
+    .icon-circle {
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+    }
+
+    .icon-menu {
+      width: 24px;
+      height: 2px;
+      background: #ffffff;
+      position: relative;
+    }
+
+    .icon-menu::before,
+    .icon-menu::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 24px;
+      height: 2px;
+      background: #ffffff;
+    }
+
+    .icon-menu::before {
+      top: -6px;
+    }
+
+    .icon-menu::after {
+      top: 6px;
+    }
+
+    .content {
+      padding: 8px;
+      padding-bottom: 56px;
+    }
+
+    .breadcrumb {
+      font-size: 11px;
+      color: #757575;
+      margin: 8px 4px 12px;
+      line-height: 1.5;
+    }
+
+    .breadcrumb span {
+      white-space: nowrap;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      padding: 12px 12px 10px;
+      margin-bottom: 8px;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 8px;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 13px;
+      color: #757575;
+      font-weight: 400;
+      border-bottom: 2px solid transparent;
+    }
+
+    .tab-active {
+      color: #039be5;
+      font-weight: 500;
+      border-bottom-color: #039be5;
+    }
+
+    .tab-icon {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .occupant-card {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border-radius: 2px;
+      border: 1px solid #e0e0e0;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #ffffff;
+    }
+
+    .occupant-card.me {
+      border-color: #43a047;
+    }
+
+    .occupant-photo-wrapper {
+      flex-shrink: 0;
+    }
+
+    .occupant-photo {
+      width: 64px;
+      height: 82px;
+      object-fit: cover;
+      border-radius: 2px;
+      border: 1px solid #e0e0e0;
+      background: #bdbdbd;
+    }
+
+    .occupant-details {
+      flex: 1;
+      font-size: 12px;
+    }
+
+    .occupant-name {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .occupant-label {
+      color: #9e9e9e;
+      font-size: 11px;
+    }
+
+    .occupant-value {
+      font-size: 12px;
+    }
+
+    .occupant-line {
+      margin-top: 2px;
+    }
+
+    .status {
+      font-weight: 500;
+    }
+
+    .status-occupied {
+      color: #43a047;
+    }
+
+    .room-info-header {
+      text-align: center;
+      font-size: 12px;
+      color: #9e9e9e;
+      margin-bottom: 6px;
+    }
+
+    .room-section {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 6px;
+      margin-top: 4px;
+      font-size: 12px;
+    }
+
+    .room-row {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .room-icon {
+      width: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #9e9e9e;
+      margin-right: 6px;
+    }
+
+    .room-label {
+      font-size: 11px;
+      color: #9e9e9e;
+      width: 80px;
+    }
+
+    .room-value {
+      font-size: 12px;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .room-section-title {
+      font-size: 11px;
+      color: #9e9e9e;
+      text-transform: uppercase;
+      margin-top: 6px;
+      border-top: 1px solid #e0e0e0;
+      padding-top: 4px;
+      letter-spacing: 0.03em;
+    }
+
+    .bottom-icon-strip {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .bottom-icon-strip-inner {
+      pointer-events: auto;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .bottom-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid #bdbdbd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      background: #f5f5f5;
+    }
+
+    .bottom-icon-line {
+      width: 14px;
+      height: 2px;
+      background: #9e9e9e;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="app-header-left">
+        <div class="app-header-logo"></div>
+        <div class="app-header-title">Aris3</div>
+      </div>
+      <div class="app-header-right">
+        <div class="icon icon-circle">A</div>
+        <div class="icon-menu"></div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="breadcrumb">
+        <span>Home / 2024-04-11830 | KASAMBALA,ZINEDINE JONAS </span><br>
+        <span>/ Accommodation / Room 415 &gt; 3rd Floor &gt; Block A &gt; Dr. J.P.J. Magufuli</span><br>
+        <span>/ My Bed / 2688/159/00002</span>
+      </div>
+
+      <section class="card">
+        <div class="tabs">
+          <div class="tab tab-active">
+            <span class="tab-icon">📄</span>
+            My Room Details
+          </div>
+          <div class="tab">
+            <span class="tab-icon">💳</span>
+            Payments
+          </div>
+          <div class="tab">
+            <span class="tab-icon">📝</span>
+            Tenancy Agreement
+          </div>
+        </div>
+      </section>
+
+      <section class="occupant-card">
+        <div class="occupant-photo-wrapper">
+          <img class="occupant-photo" src="images/roommate1.jpg" alt="Roommate 1">
+        </div>
+        <div class="occupant-details">
+          <div class="occupant-name">PAUL, PAUL TIMOTHEO [ Tanzanian - M ]</div>
+          <div class="occupant-line">
+            <span class="occupant-label">Programme</span><br>
+            <span class="occupant-value">Bachelor of Arts with Education</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">YOS</span><br>
+            <span class="occupant-value">2</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Bed #</span><br>
+            <span class="occupant-value">2688/159/00004</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Status</span><br>
+            <span class="status status-occupied">OCCUPIED</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="occupant-card">
+        <div class="occupant-photo-wrapper">
+          <img class="occupant-photo" src="images/roommate2.jpg" alt="Roommate 2">
+        </div>
+        <div class="occupant-details">
+          <div class="occupant-name">VEDASTO, DANIEL EVODIUS</div>
+          <div class="occupant-line">
+            <span class="occupant-label">Programme</span><br>
+            <span class="occupant-value">Bachelor of Arts in Geography and Environmental Studies</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">YOS</span><br>
+            <span class="occupant-value">3</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Bed #</span><br>
+            <span class="occupant-value">2688/159/00001</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Status</span><br>
+            <span class="status status-occupied">OCCUPIED</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="occupant-card">
+        <div class="occupant-photo-wrapper">
+          <img class="occupant-photo" src="images/roommate3.jpg" alt="Roommate 3">
+        </div>
+        <div class="occupant-details">
+          <div class="occupant-name">Bachelor of Arts in Geography and Environmental Studies</div>
+          <div class="occupant-line">
+            <span class="occupant-label">Programme</span><br>
+            <span class="occupant-value">Bachelor of Arts in Geography and Environmental Studies</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">YOS</span><br>
+            <span class="occupant-value">3</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Bed #</span><br>
+            <span class="occupant-value">2688/159/00001</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Status</span><br>
+            <span class="status status-occupied">OCCUPIED</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="occupant-card me">
+        <div class="occupant-photo-wrapper">
+          <img class="occupant-photo" src="images/me-photo.jpg" alt="Me">
+        </div>
+        <div class="occupant-details">
+          <div class="occupant-name">Me</div>
+          <div class="occupant-line">
+            <span class="occupant-label">Programme</span><br>
+            <span class="occupant-value">Bachelor of Science in Computer Science</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">YOS</span><br>
+            <span class="occupant-value">2</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Bed #</span><br>
+            <span class="occupant-value">2688/159/00002</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Status</span><br>
+            <span class="status status-occupied">OCCUPIED</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="occupant-card">
+        <div class="occupant-photo-wrapper">
+          <img class="occupant-photo" src="images/roommate4.jpg" alt="Roommate 4">
+        </div>
+        <div class="occupant-details">
+          <div class="occupant-name">ENOCY, MALENDEJA BUSUMABU [ Tanzanian - M ]</div>
+          <div class="occupant-line">
+            <span class="occupant-label">Programme</span><br>
+            <span class="occupant-value">Bachelor of Science in Chemistry and Physics</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">YOS</span><br>
+            <span class="occupant-value">1</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Bed #</span><br>
+            <span class="occupant-value">2688/159/00003</span>
+          </div>
+          <div class="occupant-line">
+            <span class="occupant-label">Status</span><br>
+            <span class="status status-occupied">OCCUPIED</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="room-info-header">ROOM INFORMATION</div>
+
+        <div class="room-section">
+          <div class="room-row">
+            <div class="room-icon">📍</div>
+            <div class="room-label">Location</div>
+            <div class="room-value">Dr. J.P.J. Magufuli &gt; Block A &gt; 3rd Floor &gt; Room 415</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">🛏️</div>
+            <div class="room-label">Type</div>
+            <div class="room-value">Quad</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">👥</div>
+            <div class="room-label">Capacity</div>
+            <div class="room-value">4</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">🚻</div>
+            <div class="room-label">Gender</div>
+            <div class="room-value">M</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">🚩</div>
+            <div class="room-label">Preference</div>
+            <div class="room-value">NONE</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">🔑</div>
+            <div class="room-label">Status</div>
+            <div class="room-value">RESERVED</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">✔️</div>
+            <div class="room-label">Activated?</div>
+            <div class="room-value">ACTIVATED</div>
+          </div>
+
+          <div class="room-section-title">Warden Information</div>
+
+          <div class="room-row">
+            <div class="room-icon">👤</div>
+            <div class="room-label">Name</div>
+            <div class="room-value">________________</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">✉️</div>
+            <div class="room-label">Email</div>
+            <div class="room-value">________________</div>
+          </div>
+
+          <div class="room-row">
+            <div class="room-icon">📞</div>
+            <div class="room-label">Phone Number</div>
+            <div class="room-value">________________</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="bottom-icon-strip">
+      <div class="bottom-icon-strip-inner">
+        <div class="bottom-icon">
+          <div class="bottom-icon-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
